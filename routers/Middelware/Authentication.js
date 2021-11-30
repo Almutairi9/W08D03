@@ -5,10 +5,10 @@ const SECRET = process.env.SECRET_KEY;
 const authentication = (req, res,next) => {
     
   try {
-      if(!req.headers.authrization)  
-      return res.status(403).json({ message : "forbidden"})
-      const token = req.headers.authrization.split(" ")[1];
-    //   console.log(req.headers.authrization.split(" ")[1]);
+      if(!req.headers.authorization) { 
+      return res.status(403).json({ message : "forbidden"})}
+      const token = req.headers.authorization.split(" ")[1];
+    //   console.log(req.headers.authorization.split(" ")[1]);
      
  
       const parsedToken = jwt.verify(token , SECRET);

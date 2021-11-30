@@ -4,7 +4,7 @@ const createTodo = (req, res) => {
   if (!req.token.deleted) {
     const { task } = req.body;
 
-    const newTodo = new tasksModel({
+    const newTodo = new todosModel({
       task,
       user: req.token.id,
     });
