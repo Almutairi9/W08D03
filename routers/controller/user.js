@@ -39,32 +39,39 @@ const login = (req, res) => {
     .populate("role")
     .then(async (result) => {
       if (result) {
-        if (result.email == lowerCaseEmail) {
-          const matchedPassword = await bcrypt.compare(
-            password,
-            result.password
-          );
-          if (matchedPassword) {
-            const payload = {
-              email: result.email,
-              role: result.role.role,
-            };
+        if (result.deleted === false) {
+          if (result.email == lowerCaseEmail) {
+            const matchedPassword = await bcrypt.compare(
+              password,
+              result.password
+            );
 
-            const options = {
-              expiresIn: "60m",
-            };
+            if (matchedPassword) {
+              const payload = {
+                id: result._id,
+                email: result.email,
+                role: result.role.role,
+                deleted: result.deleted,
+              };
 
-            const token = await jwt.sign(payload, SECRET, options);
+              const options = {
+                expiresIn: "60m",
+              };
 
-            res.status(200).json({ result, token });
+              const token = jwt.sign(payload, SECRET, options);
+
+              res.status(200).json({ result, token });
+            } else {
+              res.status(400).json({ message: "invalid e-mail or password !" });
+            }
           } else {
-            res.status(400).json("Invalid Email or Password!!");
+            res.status(400).json({ message: "invalid e-mail or password !" });
           }
         } else {
-          res.status(400).json("Invalid Email or Password!!");
+          res.status(404).json({ message: "the user is deleted !" });
         }
       } else {
-        res.status(404).json("Email does not exist!!");
+        res.status(404).json({ message: "e-mail does not exist !" });
       }
     })
     .catch((err) => {
@@ -72,4 +79,46 @@ const login = (req, res) => {
     });
 };
 
-module.exports = { signup, login };
+const getUsers = (req, res) => {
+  if (!req.token.deleted) {
+    usersModel
+      .find({})
+      .then((result) => {
+        if (result.length > 0) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json({ message: "there is no users found !" });
+        }
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  } else {
+    res.status(404).json({ message: "the user is deleted !" });
+  }
+};
+
+const deleteUser = (req, res) => {
+  if (!req.token.deleted) {
+    const { id } = req.params;
+
+    usersModel
+      .findByIdAndUpdate(id, { deleted: true })
+      .then(() => {
+        if (result) {
+          res
+            .status(200)
+            .json({ message: " the user hsa been deleted successfully .." });
+        } else {
+          res.status(404).json({ message: `there is no user with ID: ${id}` });
+        }
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  } else {
+    res.status(404).json({ message: "your user is deleted !" });
+  }
+};
+
+module.exports = { signup, login, getUsers, deleteUser };

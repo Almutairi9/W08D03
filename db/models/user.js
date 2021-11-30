@@ -13,5 +13,10 @@ const user = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Role",
   },
+  deleted: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 module.exports = mongoose.model("User", user);
