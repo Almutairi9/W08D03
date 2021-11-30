@@ -113,7 +113,7 @@ const updateTodo = (req, res) => {
     const { id } = req.params;
     const { task } = req.body;
 
-    tasksModel
+    todosModel
       .findOneAndUpdate(
         { _id: id, user: req.token.id, deleted: false },
         { task: task },

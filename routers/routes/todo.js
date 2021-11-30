@@ -11,11 +11,11 @@ const authentication = require("./../Middelware/Authentication");
 
 const todosRouter = express.Router();
 
-todosRouter.post("/todos", authentication, createTodo);
-todosRouter.get("/todos/:id", authentication, getOnetodo);
-todosRouter.put("/todos/:id", authentication, updateTodo);
+todosRouter.post("/todos", authentication, createTodo);  
+todosRouter.get("/todos/:id", authentication, getOnetodo);  
+todosRouter.put("/todos/:id", authentication, updateTodo); 
 todosRouter.delete("/todos/:id", authentication, deleteTodo);
 todosRouter.get("/todos", authentication, getAllTodos);
-todosRouter.get("/todos", authentication, getDeletedTodo);
+todosRouter.get("/delete", authentication, getDeletedTodo);
 
 module.exports = todosRouter;
