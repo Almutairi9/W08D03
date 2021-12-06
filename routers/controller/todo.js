@@ -27,7 +27,7 @@ const getOnetodo = (req, res) => {
     const { id } = req.params;
 
     todosModel
-      .findOne({ _id: id, user: req.token.id, deleted: false })
+      .findOne({ _id: id, deleted: false })
       .then((result) => {
         if (result) {
           res.status(200).json(result);
@@ -89,7 +89,7 @@ const deleteTodo = (req, res) => {
 
     todosModel
       .findOneAndUpdate(
-        { _id: id, user: req.token.id, deleted: false },
+        { _id: id, deleted: false },
         { deleted: true },
         { new: true }
       )
@@ -115,7 +115,7 @@ const updateTodo = (req, res) => {
 
     todosModel
       .findOneAndUpdate(
-        { _id: id, user: req.token.id, deleted: false },
+        { _id: id, deleted: false },
         { task: task },
         { new: true }
       )

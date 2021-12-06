@@ -12,11 +12,11 @@ const roles = (req, res) => {
 };
 
 const createRole = (req, res) => {
-  const { role, permissions } = req.body;
+  const { role, Permissions } = req.body;
 
   const newRole = new roleModel({
     role,
-    permissions,
+    Permissions,
   });
 
   newRole
