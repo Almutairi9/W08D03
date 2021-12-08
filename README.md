@@ -38,4 +38,10 @@ Import the Project
    SECRET_KEY = 'any word key to make token'
    ```
 ### ERD 
-![ERD drawio](https://user-images.githubusercontent.com/92248041/145262035-9fada397-e44e-4539-a0a9-00fd3081ef54.png)
+![ERD drawio](https://user-images.githubusercontent.com/92248041/145262035-9fada397-e44e-4539-a0a9-00fd3081ef54.png) 
+
+
+### UML diagram 
+![ERD drawio (1)](https://user-images.githubusercontent.com/92248041/145269287-33b38b08-5d9f-4474-a63e-3b6bc07c8576.png)
+
+
