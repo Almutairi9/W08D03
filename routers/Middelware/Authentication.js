@@ -3,7 +3,7 @@ require("dotenv").config();
 const SECRET = process.env.SECRET_KEY;
 
 const authentication = (req, res,next) => {
-    
+  console.log( "rawan...authentication...... ");
   try {
       if(!req.headers.authorization) { 
       return res.status(403).json({ message : "forbidden"})}

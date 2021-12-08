@@ -134,6 +134,51 @@ const updateTodo = (req, res) => {
   }
 };
 
+// Admin ...
+const deleteTodoByAdmin = (req, res) => {
+  if (!req.token.deleted) {
+    const { id } = req.params;
+
+    todosModel
+      .findOneAndUpdate(
+        { _id: id, deleted: false },
+        { deleted: true },
+        { new: true }
+      )
+      .then((result) => {
+        if (result) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json({ message: `there is no task with ID: ${id}` });
+        }
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  } else {
+    res.status(404).json({ message: "your user is deleted" });
+  }
+};
+
+const getAllTodosByAdmin = (req, res) => {
+  const id = req.params.id;  // id for any user
+  if (!req.token.deleted) {
+    todosModel
+      .find({ user: id, deleted: false })
+      .then((result) => {
+        if (result.length > 0) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json({ message: "there is no add tasks !" });
+        }
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  } else {
+    res.status(404).json({ message: "your user is deleted .." });
+  }
+};
 module.exports = {
   createTodo,
   getOnetodo,
@@ -141,4 +186,7 @@ module.exports = {
   updateTodo,
   getDeletedTodo,
   getAllTodos,
+  // BY ADMIN .....
+  deleteTodoByAdmin, 
+  getAllTodosByAdmin, 
 };

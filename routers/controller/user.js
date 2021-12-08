@@ -80,11 +80,10 @@ const login = (req, res) => {
 };
 
 const getUsers = (req, res) => {
-  if (!req.token.deleted) {
     usersModel
       .find({})
       .then((result) => {
-        if (result.length > 0) {
+        if (result.length !== 0) {
           res.status(200).json(result);
         } else {
           res.status(404).json({ message: "there is no users found !" });
@@ -93,32 +92,29 @@ const getUsers = (req, res) => {
       .catch((err) => {
         res.status(400).json(err);
       });
-  } else {
-    res.status(404).json({ message: "the user is deleted !" });
-  }
 };
 
 const deleteUser = (req, res) => {
-  if (!req.token.deleted) {
+ 
     const { id } = req.params;
-
+// console.log(id);
     usersModel
       .findByIdAndUpdate(id, { deleted: true })
-      .then(() => {
+      .then((result) => {
         if (result) {
+          console.log("id ...........");
           res
             .status(200)
             .json({ message: " the user hsa been deleted successfully .." });
         } else {
+          console.log("id ...9999999999........");
           res.status(404).json({ message: `there is no user with ID: ${id}` });
         }
       })
       .catch((err) => {
+        console.log(err);
         res.status(400).json(err);
       });
-  } else {
-    res.status(404).json({ message: "your user is deleted !" });
-  }
 };
 
 module.exports = { signup, login, getUsers, deleteUser };
